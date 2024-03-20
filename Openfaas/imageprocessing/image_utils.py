@@ -3,9 +3,6 @@ import io
 import base64
 import math
 def RESIZE_IMAGE(image_data_b64, output_size):
-    """
-    图像缩放函数，接收base64编码的图像数据和输出尺寸，返回缩放后的图像字节流。
-    """
     # Decode the base64 image data
     image_data = base64.b64decode(image_data_b64)
 
@@ -25,9 +22,6 @@ def RESIZE_IMAGE(image_data_b64, output_size):
     return resized_image_b64
 
 def APPLY_FILTER(image_data_b64, filter_type=ImageFilter.GaussianBlur(5)):
-    """
-    图像滤镜应用函数，接收图像字节流列表和滤镜类型，返回应用滤镜后的图像字节流列表。
-    """
     image_data = base64.b64decode(image_data_b64)
     if not isinstance(filter_type, ImageFilter.Filter):
         raise ValueError("filter_type must be an instance of ImageFilter.Filter")
@@ -42,9 +36,7 @@ def APPLY_FILTER(image_data_b64, filter_type=ImageFilter.GaussianBlur(5)):
     return filtered_image_b64
 
 def COMPOSITE_IMAGES(image_data_list):
-    """
-    图像合成函数，接收一个 base64 编码的图像数据列表，将它们合成为一个矩形，并返回合成图像的字节流。
-    """
+
     # Decode base64-encoded image data and open as PIL images
     images = [Image.open(io.BytesIO(base64.b64decode(image_data))) for image_data in image_data_list]
 

@@ -2,14 +2,16 @@ import requests
 import base64
 import os
 import concurrent.futures
+import json
 
 # The local or deployed Azure Function endpoint
-FUNCTION_URL = 'http://localhost:7071/api'
+FUNCTION_URL = 'https://ml22fw3.azurewebsites.net/api' # Azure
+# FUNCTION_URL = 'http://172.187.163.86:8080/function' # opensaas
 
 # Folder containing images
-IMAGES_FOLDER = '/Users/dominikwei/Documents/test_set'
-CONCURRENCY_LEVEL = 10  # Define how many concurrent requests you want to send
-DEFAULT_IMAGES_PER_COMPOSITE = 100
+IMAGES_FOLDER = './test_set'
+CONCURRENCY_LEVEL = 1  # Define how many concurrent requests you want to send
+DEFAULT_IMAGES_PER_COMPOSITE = 10
 
 def process_image(action, image_data):
     """
@@ -21,7 +23,13 @@ def process_image(action, image_data):
     elif isinstance(image_data, list):
         payload['image_data_list'] = image_data
 
+    
     response = requests.post(f'{FUNCTION_URL}/{action}', json=payload)
+    payload_json = json.dumps(payload, indent=4)
+
+    with open('payload.json', 'w') as file:
+        file.write(payload_json)
+
     if response.status_code == 200:
         return response.json()
     else:
@@ -101,8 +109,8 @@ def test_composite(concurrency_level=CONCURRENCY_LEVEL, images_per_composite=DEF
         # Wait for all futures to complete
         concurrent.futures.wait(futures)
 def main():
-    test_resize()
-    test_filter()
+    # test_resize()
+    # test_filter()
     test_composite()
 
 if __name__ == "__main__":
