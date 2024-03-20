@@ -1,0 +1,10 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: http://172.187.163.86:8080
+functions:
+  image-processing:
+    lang: python3
+    handler: ./imageprocessing
+    image: dominique9898/image-processing:latest
+
