@@ -5,8 +5,8 @@ import concurrent.futures
 import json
 
 # The local or deployed Azure Function endpoint
-FUNCTION_URL = 'https://ml22fw3.azurewebsites.net/api' # Azure
-# FUNCTION_URL = 'http://172.187.163.86:8080/function' # opensaas
+FUNCTION_URL = 'https://xxxx.azurewebsites.net/api' # Azure
+# FUNCTION_URL = 'http://xxx.xxx.xxx.xx:8080/function' # openfaas
 
 # Folder containing images
 IMAGES_FOLDER = './test_set'
