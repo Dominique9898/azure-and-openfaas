@@ -3,15 +3,16 @@ import base64
 import os
 import concurrent.futures
 import json
+import time
 
 # The local or deployed Azure Function endpoint
-FUNCTION_URL = 'https://xxxx.azurewebsites.net/api' # Azure
-# FUNCTION_URL = 'http://xxx.xxx.xxx.xx:8080/function' # openfaas
+FUNCTION_URL = 'https://ml22fw3.azurewebsites.net/api' # Azure
+# FUNCTION_URL = 'http://172.187.163.86:8080/function' # openfaas
 
 # Folder containing images
 IMAGES_FOLDER = './test_set'
-CONCURRENCY_LEVEL = 1  # Define how many concurrent requests you want to send
-DEFAULT_IMAGES_PER_COMPOSITE = 10
+CONCURRENCY_LEVEL = 100
+DEFAULT_IMAGES_PER_COMPOSITE = 100
 
 def process_image(action, image_data):
     """
@@ -64,7 +65,7 @@ def save_processed_image(image_path, action, processed_image_data):
     output_path = os.path.join(output_folder, filename)
     with open(output_path, 'wb') as f:
         f.write(processed_image_data)
-    print(f"Image '{filename}' processed with action '{action}' and saved as '{output_path}'")
+    # print(f"Image '{filename}' processed with action '{action}' and saved as '{output_path}'")
 
 def test_resize():
     image_paths = [os.path.join(IMAGES_FOLDER, filename) for filename in os.listdir(IMAGES_FOLDER)
@@ -109,9 +110,27 @@ def test_composite(concurrency_level=CONCURRENCY_LEVEL, images_per_composite=DEF
         # Wait for all futures to complete
         concurrent.futures.wait(futures)
 def main():
-    # test_resize()
-    # test_filter()
+    start_time = time.time()
+
+    test_resize()
+    
+    end_time = time.time()
+    print("Execution time for test_resize():", end_time - start_time, "seconds")
+
+    start_time = time.time()
+
+    test_filter()
+    
+    end_time = time.time()
+    print("Execution time for test_filter():", end_time - start_time, "seconds")
+
+    start_time = time.time()
+
     test_composite()
+    
+    end_time = time.time()
+    print("Execution time for test_composite():", end_time - start_time, "seconds")
+
 
 if __name__ == "__main__":
     main()
